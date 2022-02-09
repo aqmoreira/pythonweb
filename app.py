@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, g
 import sqlite3 #import para usar banco de dados
 
 DATABASE = "blog.bd"    #dados do banco de ddos
@@ -13,12 +13,26 @@ def conectar_bd():  #função para conectar com banco de dados.
 #Comando para criar o BD no terminal
 # sqlite3 blog.bd < esquema.sql
 
+@app.before_request
+def antes_requisicao():     #funcao que vai rodar antes da requisicao
+    g.bd = conectar_bd()
+
+@app.teardown_request       #função que vai rodar após a requisiição
+def fim_requisicao(exc):
+    g.bd.close()
+
+
+
 @app.route('/')
-@app.route('/home')
-def home():
+def exibir_entradas():
+    sql = "SELECT titulo,texto FROM entradas ORDER BY id DESC"  #string sql de pesquisa no banco de dados
+    cur = g.bd.execute(sql)  #executa o sql no banco de dados e salva o retorno em cur
+    entradas = []
+    return str(entradas)
+    
     return "Hello from Flask"
 
-@app.route('/robopisca')
-def robopisca():
-    return "#RoboPisca"
+#@app.route('/robopisca') #exemplo de outra url
+#def robopisca():
+#    return "#RoboPisca"
 
