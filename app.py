@@ -4,6 +4,7 @@ import sqlite3 #import para usar banco de dados
 DATABASE = "blog.bd"    #dados do banco de ddos
 SECRETE_KEY = "senhaForte" #senha
 
+
 app = Flask(__name__) #app vai ser o nome do arquivo
 app.config.from_object(__name__)    #local de onde busca as propriedade de config
 
